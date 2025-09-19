@@ -29,9 +29,14 @@ process.env.JWT_SECRET = crypto.randomBytes(64).toString("hex");
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:3000'],
+  origin: [
+    'http://localhost:5173',
+    'http://localhost:3000',
+    'https://foodorderingapplication.vercel.app'
+  ],
   credentials: true
-})); 
+}));
+
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
