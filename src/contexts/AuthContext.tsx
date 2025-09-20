@@ -71,7 +71,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // ✅ Logout (handles both manual + expired sessions)
   const logout = async (reason?: "expired" | "manual") => {
     try {
-      await axios.post("/api/auth/logout");
+      await axios.post("/auth/logout");
     } catch (err) {
       console.error("Logout failed:", getErrorMessage(err));
     } finally {
@@ -91,7 +91,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const checkSession = async () => {
       try {
-        const res = await axios.get("/api/auth/me");
+        const res = await axios.get("/auth/me");
         if (res.data) {
           setUser(normalizeUser(res.data));
         } else {
@@ -115,7 +115,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // ✅ Login
   const login = async (email: string, password: string) => {
     try {
-      const res = await axios.post("/api/auth/login", { email, password });
+      const res = await axios.post("/auth/login", { email, password });
       if (!res.data?.user) throw new Error("Invalid login response");
       setUser(normalizeUser(res.data.user));
     } catch (err: any) {
@@ -142,7 +142,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     address?: object
   ) => {
     try {
-      const res = await axios.post("/api/auth/register", {
+      const res = await axios.post("/auth/register", {
         name,
         email,
         password,
