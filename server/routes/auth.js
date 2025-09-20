@@ -17,7 +17,7 @@ const sendTokenResponse = (user, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "development", // HTTPS in prod
+      secure: process.env.NODE_ENV === "production", // HTTPS in prod
       sameSite: "none",
       maxAge: 60 * 60 * 1000, // 1 hour
     });
