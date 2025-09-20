@@ -35,18 +35,24 @@ const allowedOrigins = [
 
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin) return callback(null, true); // allow requests like Postman
-    if (
-      allowedOrigins.some((allowed) =>
-        allowed instanceof RegExp ? allowed.test(origin) : allowed === origin
-      )
-    ) {
-      return callback(null, true);
+    if (!origin) return callback(null, true); // allow Postman, etc.
+
+    // ✅ Allow Vercel preview + your custom domain + localhost
+    const allowed = [
+      /^https:\/\/.*vercel\.app$/,
+      "http://localhost:5173",
+      "http://localhost:3000"
+    ];
+
+    if (allowed.some(o => (o instanceof RegExp ? o.test(origin) : o === origin))) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
     }
-    return callback(new Error("Not allowed by CORS"));
   },
-  credentials: true,
+  credentials: true
 }));
+
 
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
