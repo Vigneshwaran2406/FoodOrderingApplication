@@ -39,7 +39,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 // ✅ API base (Vite env or fallback localhost)
 const API_BASE =
   ((import.meta as any)?.env?.VITE_API_URL as string) ||
-  "http://localhost:5000";
+  "http://localhost:5000/api";
 
 // ✅ Axios defaults
 axios.defaults.baseURL = API_BASE;
