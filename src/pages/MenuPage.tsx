@@ -18,7 +18,7 @@ const MenuPage: React.FC = () => {
     sortOrder: 'desc'
   });
   const [showFilters, setShowFilters] = useState(false);
-
+  const API_URL = import.meta.env.VITE_API_URL;
   const categories = [
     { value: '', label: 'All Categories' },
     { value: 'appetizer', label: 'Appetizers' },
@@ -43,7 +43,7 @@ const MenuPage: React.FC = () => {
         }
       });
 
-      const response = await axios.get(`http://localhost:5000/api/products?${params}`);
+      const response = await axios.get(`${API_URL}/products?${params}`);
       setProducts(response.data.products);
     } catch (error) {
       console.error('Error fetching products:', error);

@@ -22,18 +22,18 @@ const ProductDetailPage: React.FC = () => {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
   const [submitting, setSubmitting] = useState(false);
-
+  const API_URL = import.meta.env.VITE_API_URL;
   // Fetch product + reviews (single place)
   useEffect(() => {
     const fetchProduct = async () => {
       setLoading(true);
       try {
-        const { data } = await axios.get(`http://localhost:5000/api/products/${id}`);
+        const { data } = await axios.get(`${API_URL}/products/${id}`);
         setProduct(data || null);
 
         // fetch reviews (safe)
         try {
-          const reviewRes = await axios.get(`http://localhost:5000/api/reviews/product/${id}`);
+          const reviewRes = await axios.get(`${API_URL}/reviews/product/${id}`);
           setReviews(Array.isArray(reviewRes.data) ? reviewRes.data : []);
         } catch (revErr) {
           console.error('Failed to fetch reviews:', revErr);
@@ -63,7 +63,7 @@ const ProductDetailPage: React.FC = () => {
 
   const checkIfFavorite = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/users/favorites", {
+      const res = await axios.get("${API_URL}/users/favorites", {
         withCredentials: true,
       });
       const favIds = Array.isArray(res.data) ? res.data.map((fav: any) => fav._id) : [];
@@ -80,12 +80,12 @@ const ProductDetailPage: React.FC = () => {
     }
     try {
       if (isFavorite) {
-        await axios.delete(`http://localhost:5000/api/users/favorites/${product._id}`, {
+        await axios.delete(`${API_URL}/users/favorites/${product._id}`, {
           withCredentials: true,
         });
         setIsFavorite(false);
       } else {
-        await axios.post(`http://localhost:5000/api/users/favorites/${product._id}`, {}, {
+        await axios.post(`${API_URL}/users/favorites/${product._id}`, {}, {
           withCredentials: true,
         });
         setIsFavorite(true);
@@ -139,7 +139,7 @@ const ProductDetailPage: React.FC = () => {
     try {
       setSubmitting(true);
       const res = await axios.post(
-        "http://localhost:5000/api/reviews",
+        "${API_URL}/reviews",
         {
           productId: product._id,
           rating,
