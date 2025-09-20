@@ -32,7 +32,7 @@ app.use(cors({
   origin: [
     'http://localhost:5173',
     'http://localhost:3000',
-    'https://foodorderingapplication.vercel.app'
+    'https://food-ordering-application-hkfreymav.vercel.app'
   ],
   credentials: true
 }));
