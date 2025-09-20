@@ -27,26 +27,26 @@ app.set("trust proxy", 1); // ✅ Render proxy for cookies
 
 const PORT = process.env.PORT || 5000;
 
-// Allowed origins for CORS
 const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:3000",
-  "https://food-ordering-application-hkfreymav.vercel.app", // Vercel frontend
-  "https://foodorderingapplication-ygqm.onrender.com",      // Render backend
+  /\.vercel\.app$/, // ✅ allow ALL vercel preview & production URLs
 ];
 
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true,
-  })
-);
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true); // allow requests like Postman
+    if (
+      allowedOrigins.some((allowed) =>
+        allowed instanceof RegExp ? allowed.test(origin) : allowed === origin
+      )
+    ) {
+      return callback(null, true);
+    }
+    return callback(new Error("Not allowed by CORS"));
+  },
+  credentials: true,
+}));
 
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
