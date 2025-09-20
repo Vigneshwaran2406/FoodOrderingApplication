@@ -24,8 +24,6 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-import crypto from "crypto"; // ✅ added
-process.env.JWT_SECRET = crypto.randomBytes(64).toString("hex");
 
 // Middleware
 app.use(cors({
