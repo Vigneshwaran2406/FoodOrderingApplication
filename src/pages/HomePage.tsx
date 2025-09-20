@@ -6,6 +6,7 @@ import axios from 'axios';
 
 const HomePage: React.FC = () => {
   const [featuredProducts, setFeaturedProducts] = useState([]);
+  const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     fetchFeaturedProducts();
@@ -13,7 +14,7 @@ const HomePage: React.FC = () => {
 
   const fetchFeaturedProducts = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/products?limit=6&sortBy=averageRating');
+      const response = await axios.get('${API_URL}/products?limit=6&sortBy=averageRating');
       setFeaturedProducts(response.data.products);
     } catch (error) {
       console.error('Error fetching featured products:', error);
