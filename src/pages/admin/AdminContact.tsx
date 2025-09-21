@@ -5,10 +5,10 @@ import toast, { Toaster } from "react-hot-toast"; // ✅ Import Toaster
 const AdminContact: React.FC = () => {
   const [messages, setMessages] = useState<any[]>([]);
   const [replyText, setReplyText] = useState<{ [key: string]: string }>({});
-
+const API_URL = import.meta.env.VITE_API_URL;
   const fetchMessages = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/contact/admin", {
+      const res = await axios.get(`${API_URL}/contact/admin`, {
         withCredentials: true,
       });
       setMessages(res.data);
@@ -29,7 +29,7 @@ const AdminContact: React.FC = () => {
 
     try {
       const res = await axios.put(
-        `http://localhost:5000/api/contact/admin/respond/${id}`,
+        `${API_URL}/contact/admin/respond/${id}`,
         { response: replyText[id] },
         { withCredentials: true }
       );

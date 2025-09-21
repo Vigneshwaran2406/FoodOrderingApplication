@@ -21,7 +21,7 @@ const formatStatus = (status: string) => {
     .replace(/-/g, " ") // replace dashes with spaces
     .replace(/\b\w/g, (char) => char.toUpperCase()); // capitalize each word
 };
-
+const API_URL = import.meta.env.VITE_API_URL;
 const getStatusBadge = (status: string) => {
   if (!status) return null;
   let classes = "bg-gray-100 text-gray-800";
@@ -120,8 +120,8 @@ const AdminUsers: React.FC = () => {
   const fetchUsers = async () => {
     try {
       const url = roleFilter
-        ? `http://localhost:5000/api/admin/users?role=${roleFilter}`
-        : `http://localhost:5000/api/admin/users`;
+        ? `${API_URL}/admin/users?role=${roleFilter}`
+        : `${API_URL}/admin/users`;
 
       const response = await axios.get(url);
       setUsers(response.data);
@@ -137,7 +137,7 @@ const AdminUsers: React.FC = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/admin/users",
+        "${API_URL}/admin/users",
         formData
       );
       const newUser = response.data.user;
@@ -158,7 +158,7 @@ const AdminUsers: React.FC = () => {
     if (!editingUser) return;
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/admin/users/${editingUser._id}`,
+        `${API_URL}/admin/users/${editingUser._id}`,
         formData
       );
       const updatedUser = response.data.user;
@@ -180,7 +180,7 @@ const AdminUsers: React.FC = () => {
   const handleDelete = async () => {
     if (!userToDelete) return;
     try {
-      await axios.delete(`http://localhost:5000/api/admin/users/${userToDelete}`);
+      await axios.delete(`${API_URL}/admin/users/${userToDelete}`);
       setUsers((prev) => prev.filter((u) => u._id !== userToDelete));
       setShowDeleteModal(false);
       setUserToDelete(null);
@@ -196,7 +196,7 @@ const AdminUsers: React.FC = () => {
   const toggleUserStatus = async (userId: string) => {
     try {
       await axios.put(
-        `http://localhost:5000/api/admin/users/${userId}/toggle-status`
+        `${API_URL}/admin/users/${userId}/toggle-status`
       );
       setUsers((prev) =>
         prev.map((u) =>
@@ -212,7 +212,7 @@ const AdminUsers: React.FC = () => {
 const fetchUserDetails = async (userId: string) => {
   try {
     setViewLoading(true);
-    const response = await axios.get(`http://localhost:5000/api/admin/users/${userId}/details`);
+    const response = await axios.get(`${API_URL}/admin/users/${userId}/details`);
     setSelectedUserDetails(response.data);
     setShowViewModal(true);
   } catch (error) {

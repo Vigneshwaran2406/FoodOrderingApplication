@@ -22,7 +22,7 @@ const AdminProfilePage: React.FC = () => {
     profileImage: ''
   });
   const [loading, setLoading] = useState(false);
-
+  const API_URL = import.meta.env.VITE_API_URL;
   // 🔑 Password state
   const [showPasswordForm, setShowPasswordForm] = useState(false);
   const [passwordData, setPasswordData] = useState({
@@ -42,7 +42,7 @@ const AdminProfilePage: React.FC = () => {
   // 📥 Fetch profile from backend
   const fetchUserProfile = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/users/profile', {
+      const response = await axios.get('${API_URL}/users/profile', {
         withCredentials: true
       });
       const userData = response.data;
@@ -128,7 +128,7 @@ const handleUploadImage = async () => {
 
   try {
     const response = await axios.put(
-      'http://localhost:5000/api/users/profile/upload',
+      '${API_URL}/users/profile/upload',
       formDataImg,
       {
         withCredentials: true,
@@ -163,7 +163,7 @@ const handleUploadImage = async () => {
     try {
       setPasswordLoading(true);
       const response = await axios.put(
-        'http://localhost:5000/api/users/profile/change-password',
+        '${API_URL}/users/profile/change-password',
         {
           currentPassword: passwordData.currentPassword,
           newPassword: passwordData.newPassword

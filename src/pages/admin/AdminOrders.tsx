@@ -16,7 +16,7 @@ const AdminOrders: React.FC = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [refundResponse, setRefundResponse] = useState('');
-
+  const API_URL = import.meta.env.VITE_API_URL;
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -44,7 +44,7 @@ const AdminOrders: React.FC = () => {
 
   const fetchOrders = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/admin/orders', { withCredentials: true });
+      const response = await axios.get('${API_URL}/admin/orders', { withCredentials: true });
       setOrders(response.data);
     } catch (error) {
       console.error('Error fetching orders:', error);
@@ -56,7 +56,7 @@ const AdminOrders: React.FC = () => {
 
   const fetchOrderDetails = async (orderId: string) => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/admin/orders/${orderId}`, { withCredentials: true });
+      const response = await axios.get(`${API_URL}/admin/orders/${orderId}`, { withCredentials: true });
       setSelectedOrder(response.data);
       setShowOrderModal(true);
     } catch (error) {
@@ -68,7 +68,7 @@ const AdminOrders: React.FC = () => {
   const updateOrderStatus = async (orderId: string, status: string) => {
     try {
       await axios.put(
-        `http://localhost:5000/api/admin/orders/${orderId}/status`,
+        `${API_URL}/admin/orders/${orderId}/status`,
         { status },
         { withCredentials: true }
       );
@@ -87,7 +87,7 @@ const AdminOrders: React.FC = () => {
   const handleRefund = async (orderId: string, action: 'approved' | 'denied') => {
     try {
       await axios.put(
-        `http://localhost:5000/api/orders/admin/orders/${orderId}/update-refund`, // ✅ fixed
+        `${API_URL}/orders/admin/orders/${orderId}/update-refund`, // ✅ fixed
         { status: action, rejectionReason: refundResponse || '' },
         { withCredentials: true }
       );

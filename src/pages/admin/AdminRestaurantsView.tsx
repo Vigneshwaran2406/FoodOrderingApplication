@@ -15,7 +15,7 @@ const AdminRestaurantsView: React.FC = () => {
     sortOrder: 'desc'
   });
   const [showFilters, setShowFilters] = useState(false);
-
+  const API_URL = import.meta.env.VITE_API_URL;
   const cuisineTypes = [
     { value: '', label: 'All Cuisines' },
     { value: 'Italian', label: 'Italian' },
@@ -44,7 +44,7 @@ const AdminRestaurantsView: React.FC = () => {
         }
       });
 
-      const response = await axios.get(`/api/restaurants?${params}`);
+      const response = await axios.get(`${API_URL}/restaurants?${params}`);
       setRestaurants(response.data.restaurants);
     } catch (error) {
       console.error('Error fetching restaurants:', error);
