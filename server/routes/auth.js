@@ -80,11 +80,16 @@ router.post("/login", async (req, res) => {
     }
 
     if (!user.isActive) {
-  return res.status(403).json({ message: "Your account has been deactivated. Please contact support." });
-}
-user.lastLogin = new Date();
-await user.save();
+      return res
+        .status(403)
+        .json({
+          message:
+            "Your account has been deactivated. Please contact support.",
+        });
+    }
 
+    user.lastLogin = new Date();
+    await user.save();
 
     sendTokenResponse(user, res);
   } catch (error) {
@@ -93,7 +98,6 @@ await user.save();
   }
 });
 
-// ✅ Logout
 // ✅ Logout
 router.post("/logout", authMiddleware, async (req, res) => {
   try {
@@ -104,8 +108,8 @@ router.post("/logout", authMiddleware, async (req, res) => {
 
     res.clearCookie("token", {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "development",
-      sameSite: "strict",
+      secure: process.env.NODE_ENV === "production", // ✅ fix
+      sameSite: "none", // ✅ fix
     });
 
     res.json({ message: "Logged out successfully" });
@@ -114,7 +118,6 @@ router.post("/logout", authMiddleware, async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 });
-
 
 // ✅ Get current user
 router.get("/me", authMiddleware, async (req, res) => {
