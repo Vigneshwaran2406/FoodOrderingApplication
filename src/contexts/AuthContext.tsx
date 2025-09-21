@@ -37,13 +37,12 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // ✅ API base (Vite env or fallback localhost)
-const API_BASE =
+const API_URL =
   ((import.meta as any)?.env?.VITE_API_URL as string) ||
   "http://localhost:5000";
-const API_URL = import.meta.env.VITE_API_URL;
 
 // ✅ Axios defaults
-axios.defaults.baseURL = API_BASE;
+axios.defaults.baseURL = API_URL;
 axios.defaults.withCredentials = true; // send/receive cookies automatically
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
@@ -72,7 +71,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // ✅ Logout (handles both manual + expired sessions)
   const logout = async (reason?: "expired" | "manual") => {
     try {
-      await axios.post("${API_URL}/auth/logout");
+      await axios.post(`${API_URL}/auth/logout`); // ✅ fixed
     } catch (err) {
       console.error("Logout failed:", getErrorMessage(err));
     } finally {
@@ -92,7 +91,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const checkSession = async () => {
       try {
-        const res = await axios.get("${API_URL}/auth/me");
+        const res = await axios.get(`${API_URL}/auth/me`); // ✅ fixed
         if (res.data) {
           setUser(normalizeUser(res.data));
         } else {
@@ -116,7 +115,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // ✅ Login
   const login = async (email: string, password: string) => {
     try {
-      const res = await axios.post("/auth/login", { email, password });
+      const res = await axios.post(`/auth/login`, { email, password });
       if (!res.data?.user) throw new Error("Invalid login response");
       setUser(normalizeUser(res.data.user));
     } catch (err: any) {
@@ -143,7 +142,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     address?: object
   ) => {
     try {
-      const res = await axios.post("${API_URL}/auth/register", {
+      const res = await axios.post(`${API_URL}/auth/register`, { // ✅ fixed
         name,
         email,
         password,
