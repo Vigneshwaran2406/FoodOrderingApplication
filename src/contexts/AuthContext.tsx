@@ -37,9 +37,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // ✅ API base (Vite env or fallback localhost)
-const API_URL =
-  ((import.meta as any)?.env?.VITE_API_URL as string) ||
-  "http://localhost:5000";
+const API_URL = import.meta.env.VITE_API_URL;
 
 // ✅ Axios defaults
 axios.defaults.baseURL = API_URL;
@@ -71,7 +69,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // ✅ Logout (handles both manual + expired sessions)
   const logout = async (reason?: "expired" | "manual") => {
     try {
-      await axios.post(`${API_URL}/auth/logout`); // ✅ fixed
+      await axios.post(`${API_URL}/auth/logout`);
     } catch (err) {
       console.error("Logout failed:", getErrorMessage(err));
     } finally {
@@ -91,7 +89,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     const checkSession = async () => {
       try {
-        const res = await axios.get(`${API_URL}/auth/me`); // ✅ fixed
+        const res = await axios.get(`${API_URL}/auth/me`);
         if (res.data) {
           setUser(normalizeUser(res.data));
         } else {
@@ -142,7 +140,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     address?: object
   ) => {
     try {
-      const res = await axios.post(`${API_URL}/auth/register`, { // ✅ fixed
+      const res = await axios.post("${API_URL}/auth/register", {
         name,
         email,
         password,
