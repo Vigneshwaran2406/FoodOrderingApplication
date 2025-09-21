@@ -23,16 +23,17 @@ import axios from "axios";
 const AdminDashboard: React.FC = () => {
   const [analytics, setAnalytics] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const API_URL = import.meta.env.VITE_API_URL;
   const [recentActivity, setRecentActivity] = useState<any[]>([]);
-
+  
   useEffect(() => {
     fetchAnalytics();
     fetchRecentActivity();
   }, []);
-
+  
   const fetchAnalytics = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/admin/analytics", {
+      const response = await axios.get("${API_URL}/admin/analytics", {
         withCredentials: true,
       });
       setAnalytics(response.data);
@@ -45,7 +46,7 @@ const AdminDashboard: React.FC = () => {
 
   const fetchRecentActivity = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/admin/recent-activity", {
+      const response = await axios.get("${API_URL}/admin/recent-activity", {
         withCredentials: true,
       });
       setRecentActivity(response.data || []);

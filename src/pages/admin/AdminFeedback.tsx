@@ -22,7 +22,7 @@ const AdminFeedback: React.FC = () => {
   const [isEditingResponse, setIsEditingResponse] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-
+  const API_URL = import.meta.env.VITE_API_URL;
   const { id } = useParams();      
   const navigate = useNavigate();
 
@@ -86,7 +86,7 @@ const AdminFeedback: React.FC = () => {
       });
 
       const response = await axios.get(
-        `http://localhost:5000/api/feedback/admin?${params}`, // ✅ fixed
+        `${API_URL}/feedback/admin?${params}`, // ✅ fixed
         { withCredentials: true }
       );
       setFeedbacks(response.data);
@@ -101,7 +101,7 @@ const AdminFeedback: React.FC = () => {
   const fetchFeedbackDetails = async (feedbackId: string) => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/api/feedback/${feedbackId}`, // ✅ fixed
+        `${API_URL}/feedback/${feedbackId}`, // ✅ fixed
         { withCredentials: true }
       );
       setSelectedFeedback(response.data);
@@ -118,7 +118,7 @@ const AdminFeedback: React.FC = () => {
     } catch (error) {
       console.error('Error fetching feedback details:', error);
       showMessage('Failed to fetch feedback details', 'error');
-      navigate('/admin/feedback');
+      navigate('${API_URL}/admin/feedback');
     }
   };
 
@@ -132,7 +132,7 @@ const AdminFeedback: React.FC = () => {
 
     try {
       await axios.put(
-        `http://localhost:5000/api/feedback/${selectedFeedback._id}/respond`, // ✅ fixed
+        `${API_URL}/feedback/${selectedFeedback._id}/respond`, // ✅ fixed
         responseData,
         { withCredentials: true }
       );
@@ -151,7 +151,7 @@ const AdminFeedback: React.FC = () => {
   const updateStatus = async (feedbackId: string, status: string, priority?: string) => {
     try {
       await axios.put(
-        `http://localhost:5000/api/feedback/${feedbackId}/status`, // ✅ fixed
+        `${API_URL}/feedback/${feedbackId}/status`, // ✅ fixed
         { status, priority },
         { withCredentials: true }
       );
@@ -172,7 +172,7 @@ const AdminFeedback: React.FC = () => {
     setSelectedFeedback(null);
     setIsEditingResponse(false);
     setResponseData({ message: '', status: 'in-progress' });
-    navigate('/admin/feedback');
+    navigate('${API_URL}/admin/feedback');
   };
 
   const getStatusIcon = (status: string) => {
@@ -382,7 +382,7 @@ const AdminFeedback: React.FC = () => {
                   </select>
 
                   <button
-                    onClick={() => navigate(`/admin/feedback/${feedback._id}`)}
+                    onClick={() => navigate(`${API_URL}/admin/feedback/${feedback._id}`)}
                     className="text-sm bg-slate-100 text-slate-700 px-3 py-1 rounded-md hover:bg-slate-200 transition-colors"
                   >
                     View
