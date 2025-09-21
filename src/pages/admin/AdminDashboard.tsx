@@ -33,7 +33,7 @@ const AdminDashboard: React.FC = () => {
   
   const fetchAnalytics = async () => {
     try {
-      const response = await axios.get("${API_URL}/admin/analytics", {
+      const response = await axios.get(`${API_URL}/admin/analytics`, {
         withCredentials: true,
       });
       setAnalytics(response.data);
@@ -46,7 +46,7 @@ const AdminDashboard: React.FC = () => {
 
   const fetchRecentActivity = async () => {
     try {
-      const response = await axios.get("${API_URL}/admin/recent-activity", {
+      const response = await axios.get(`${API_URL}/admin/recent-activity`, {
         withCredentials: true,
       });
       setRecentActivity(response.data || []);
