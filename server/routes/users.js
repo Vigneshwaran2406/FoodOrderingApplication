@@ -31,8 +31,9 @@ router.put("/profile/upload", authMiddleware, upload.single("profileImage"), asy
     const userId = req.user.userId; // ✅ authMiddleware sets req.user
 
     // 👉 Build full URL dynamically
-    const backendUrl = process.env.BACKEND_URL || `${req.protocol}://${req.get("host")}`;
+    const backendUrl = process.env.BACKEND_URL || "http://localhost:5000";
     const imageUrl = `${backendUrl}/uploads/${req.file.filename}`;
+
 
     const updatedUser = await User.findByIdAndUpdate(
       userId,
