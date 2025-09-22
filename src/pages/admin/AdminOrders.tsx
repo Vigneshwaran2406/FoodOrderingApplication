@@ -44,7 +44,7 @@ const AdminOrders: React.FC = () => {
 
   const fetchOrders = async () => {
     try {
-      const response = await axios.get('${API_URL}/admin/orders', { withCredentials: true });
+      const response = await axios.get(`${API_URL}/admin/orders`, { withCredentials: true });
       setOrders(response.data);
     } catch (error) {
       console.error('Error fetching orders:', error);

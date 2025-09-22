@@ -42,7 +42,7 @@ const AdminProfilePage: React.FC = () => {
   // 📥 Fetch profile from backend
   const fetchUserProfile = async () => {
     try {
-      const response = await axios.get('${API_URL}/users/profile', {
+      const response = await axios.get(`${API_URL}/users/profile`, {
         withCredentials: true
       });
       const userData = response.data;
@@ -83,7 +83,7 @@ const AdminProfilePage: React.FC = () => {
     try {
       setLoading(true);
       const response = await axios.put(
-        'http://localhost:5000/api/users/profile',
+        `${API_URL}/users/profile`,
         {
           name: formData.name,
           phone: formData.phone,
@@ -128,7 +128,7 @@ const handleUploadImage = async () => {
 
   try {
     const response = await axios.put(
-      '${API_URL}/users/profile/upload',
+      `${API_URL}/users/profile/upload`,
       formDataImg,
       {
         withCredentials: true,
@@ -163,7 +163,7 @@ const handleUploadImage = async () => {
     try {
       setPasswordLoading(true);
       const response = await axios.put(
-        '${API_URL}/users/profile/change-password',
+        `${API_URL}/users/profile/change-password`,
         {
           currentPassword: passwordData.currentPassword,
           newPassword: passwordData.newPassword
