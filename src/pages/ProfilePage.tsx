@@ -388,7 +388,17 @@ useEffect(() => {
               <div className="flex flex-col items-center">
                 <div className="w-20 h-20 rounded-full overflow-hidden border">
                   {user.profileImage ? (
-                    <img src={user.profileImage} alt="Profile" className="w-full h-full object-cover" />
+                   <img
+  src={
+    user.profileImage?.startsWith("http")
+      ? user.profileImage
+      : `${API_URL}/${user.profileImage}`
+  }
+  alt="Profile"
+  className="w-full h-full object-cover"
+/>
+
+
                   ) : (
                     <User className="w-full h-full text-gray-400" />
                   )}
