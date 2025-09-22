@@ -203,7 +203,7 @@ const handleUploadImage = async () => {
   src={
     formData.profileImage?.startsWith("http")
       ? formData.profileImage
-      : `${API_URL}/${formData.profileImage}`
+      : `${API_URL.replace("/api", "")}/${formData.profileImage.replace(/^\/?/, "")}`
   }
   alt="Profile"
   className="w-full h-full object-cover"
