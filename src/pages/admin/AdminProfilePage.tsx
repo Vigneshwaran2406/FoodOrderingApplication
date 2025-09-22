@@ -200,14 +200,11 @@ const handleUploadImage = async () => {
                 <div className="w-20 h-20 rounded-full overflow-hidden border">
                   {formData.profileImage ? (
                    <img
-  src={
-    formData.profileImage?.startsWith("http")
-      ? formData.profileImage
-      : `${API_URL.replace("/api", "")}/${formData.profileImage.replace(/^\/?/, "")}`
-  }
+  src={formData.profileImage}
   alt="Profile"
   className="w-full h-full object-cover"
 />
+
 
                   ) : (
                     <User className="w-full h-full text-gray-400" />
