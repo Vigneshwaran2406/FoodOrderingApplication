@@ -98,7 +98,7 @@ const ProfilePage: React.FC = () => {
 
   const [isEditing, setIsEditing] = useState(false);
   const [isChangingPassword, setIsChangingPassword] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const API_URL = import.meta.env.VITE_API_URL;
   const [dashboardData, setDashboardData] = useState<any>({
@@ -192,7 +192,9 @@ axios.get(`${API_URL}/users/my-activities`, { withCredentials: true }),
         console.error("Error fetching data:", error);
         toast.error("Failed to fetch all data");
         setLoading(false);
-      }
+      }finally {
+      setLoading(false); // ✅ always reset
+    }
     };
 
     if (user) {
