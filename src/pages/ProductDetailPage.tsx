@@ -11,7 +11,7 @@ const ProductDetailPage: React.FC = () => {
   const { addToCart } = useCart();
   const { user } = useAuth();
   const navigate = useNavigate();
-
+  
   const [product, setProduct] = useState<any>(null);
   const [quantity, setQuantity] = useState(1);
   const [notes, setNotes] = useState('');
@@ -63,7 +63,7 @@ const ProductDetailPage: React.FC = () => {
 
   const checkIfFavorite = async () => {
     try {
-      const res = await axios.get("${API_URL}/users/favorites", {
+      const res = await axios.get(`${API_URL}/users/favorites`, {
         withCredentials: true,
       });
       const favIds = Array.isArray(res.data) ? res.data.map((fav: any) => fav._id) : [];

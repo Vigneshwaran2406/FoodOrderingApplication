@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 const AdminRefunds: React.FC = () => {
   const [refunds, setRefunds] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     fetchRefunds();
@@ -12,7 +13,7 @@ const AdminRefunds: React.FC = () => {
 
   const fetchRefunds = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/payments/my/payments", {
+      const res = await axios.get(`${API_URL}/payments/my/payments`, {
         withCredentials: true,
       });
       // 🔎 filter only requested refunds
@@ -26,7 +27,7 @@ const AdminRefunds: React.FC = () => {
 
   const handleApprove = async (txn: string) => {
     try {
-      await axios.put(`http://localhost:5000/api/payments/${txn}/refund/approve`, {}, { withCredentials: true });
+      await axios.put(`${API_URL}/payments/${txn}/refund/approve`, {}, { withCredentials: true });
       toast.success("Refund approved!");
       fetchRefunds();
     } catch (err: any) {
@@ -36,7 +37,7 @@ const AdminRefunds: React.FC = () => {
 
   const handleReject = async (txn: string) => {
     try {
-      await axios.put(`http://localhost:5000/api/payments/${txn}/refund/reject`, {}, { withCredentials: true });
+      await axios.put(`${API_URL}/payments/${txn}/refund/reject`, {}, { withCredentials: true });
       toast.success("Refund rejected!");
       fetchRefunds();
     } catch (err: any) {

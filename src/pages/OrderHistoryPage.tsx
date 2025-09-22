@@ -15,14 +15,14 @@ const OrderHistoryPage: React.FC = () => {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
   const [submitting, setSubmitting] = useState(false);
-
+  const API_URL = import.meta.env.VITE_API_URL;
   useEffect(() => {
     fetchOrders();
   }, []);
 
   const fetchOrders = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/orders/my-orders', { withCredentials: true });
+      const response = await axios.get(`${API_URL}/orders/my-orders`, { withCredentials: true });
       setOrders(response.data || []);
     } catch (error: any) {
       console.error('Error fetching orders:', error.response?.data || error.message || error);
@@ -43,7 +43,7 @@ const OrderHistoryPage: React.FC = () => {
 
     try {
       await axios.put(
-        `http://localhost:5000/api/orders/${orderId}/cancel`,
+        `${API_URL}/orders/${orderId}/cancel`,
         { reason: "User cancelled the order" },
         { withCredentials: true }
       );
@@ -58,7 +58,7 @@ const OrderHistoryPage: React.FC = () => {
   const handleRefund = async (order: any) => {
   try {
     const response = await axios.post(
-      `http://localhost:5000/api/orders/${order._id}/request-refund`,
+      `${API_URL}/orders/${order._id}/request-refund`,
       { reason: "User requested refund" }, // you can pass reason here
       { withCredentials: true }
     );
@@ -115,7 +115,7 @@ const OrderHistoryPage: React.FC = () => {
     setSubmitting(true);
     try {
       await axios.post(
-        `http://localhost:5000/api/orders/${selectedOrder._id}/review`,
+        `${API_URL}/orders/${selectedOrder._id}/review`,
         { rating, comment },
         { withCredentials: true }
       );

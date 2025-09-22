@@ -100,7 +100,7 @@ const ProfilePage: React.FC = () => {
   const [isChangingPassword, setIsChangingPassword] = useState(false);
   const [loading, setLoading] = useState(true);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-
+  const API_URL = import.meta.env.VITE_API_URL;
   const [dashboardData, setDashboardData] = useState<any>({
     stats: {
       totalOrders: 0,
@@ -144,7 +144,7 @@ const ProfilePage: React.FC = () => {
       try {
         setLoading(true);
 
-        const profileRes = await axios.get("http://localhost:5000/api/users/profile", {
+        const profileRes = await axios.get(`${API_URL}/users/profile`, {
           withCredentials: true,
         });
         const userData = profileRes.data;
@@ -158,11 +158,11 @@ const ProfilePage: React.FC = () => {
         // Fetch dashboard data
         const [ordersRes, favoritesRes, recommendationsRes, feedbackRes, activitiesRes] =
           await Promise.all([
-            axios.get("http://localhost:5000/api/orders/my-orders", { withCredentials: true }),
-axios.get("http://localhost:5000/api/users/favorites", { withCredentials: true }),
-axios.get("http://localhost:5000/api/products?limit=4&sortBy=averageRating&sortOrder=desc"),
-axios.get("http://localhost:5000/api/feedback/my-feedback", { withCredentials: true }),
-axios.get("http://localhost:5000/api/users/my-activities", { withCredentials: true }),
+            axios.get(`${API_URL}/orders/my-orders`, { withCredentials: true }),
+axios.get(`${API_URL}/users/favorites`, { withCredentials: true }),
+axios.get(`${API_URL}/products?limit=4&sortBy=averageRating&sortOrder=desc`),
+axios.get(`${API_URL}/feedback/my-feedback`, { withCredentials: true }),
+axios.get(`${API_URL}/users/my-activities`, { withCredentials: true }),
 
           ]);
 
@@ -206,11 +206,11 @@ axios.get("http://localhost:5000/api/users/my-activities", { withCredentials: tr
     try {
       const [ordersRes, favoritesRes, recommendationsRes, feedbackRes, activitiesRes] =
         await Promise.all([
-          axios.get("http://localhost:5000/api/orders/my-orders", { withCredentials: true }),
-axios.get("http://localhost:5000/api/users/favorites", { withCredentials: true }),
-axios.get("http://localhost:5000/api/products?limit=4&sortBy=averageRating&sortOrder=desc"),
-axios.get("http://localhost:5000/api/feedback/my-feedback", { withCredentials: true }),
-axios.get("http://localhost:5000/api/users/my-activities", { withCredentials: true }),
+          axios.get(`${API_URL}/orders/my-orders`, { withCredentials: true }),
+          axios.get(`${API_URL}/users/favorites`, { withCredentials: true }),
+          axios.get(`${API_URL}/products?limit=4&sortBy=averageRating&sortOrder=desc`),
+          axios.get(`${API_URL}/feedback/my-feedback`, { withCredentials: true }),
+          axios.get(`${API_URL}/users/my-activities`, { withCredentials: true }),
 
         ]);
 
@@ -244,7 +244,7 @@ axios.get("http://localhost:5000/api/users/my-activities", { withCredentials: tr
 
   const fetchUserProfile = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/users/profile", {
+      const response = await axios.get(`${API_URL}/users/profile`, {
         withCredentials: true,
       });
       const userData = response.data;
@@ -282,7 +282,7 @@ axios.get("http://localhost:5000/api/users/my-activities", { withCredentials: tr
     try {
       setLoading(true);
       const response = await axios.put(
-        "http://localhost:5000/api/users/profile",
+        `${API_URL}/users/profile`,
         {
           name: formData.name,
           phone: formData.phone,
@@ -322,7 +322,7 @@ axios.get("http://localhost:5000/api/users/my-activities", { withCredentials: tr
     formDataImg.append("profileImage", selectedFile);
     try {
       const response = await axios.put(
-        "http://localhost:5000/api/users/profile/upload",
+        `${API_URL}/users/profile/upload`,
         formDataImg,
         {
           withCredentials: true,
@@ -351,7 +351,7 @@ axios.get("http://localhost:5000/api/users/my-activities", { withCredentials: tr
 
     try {
       const res = await axios.put(
-        "http://localhost:5000/api/users/profile/change-password",
+        `${API_URL}/users/profile/change-password`,
         {
           currentPassword: passwordData.currentPassword,
           newPassword: passwordData.newPassword,
@@ -1089,7 +1089,7 @@ useEffect(() => {
                                     <button
                                       onClick={async () => {
                                         try {
-                                          const res = await axios.get(`http://localhost:5000/api/orders/${act.details.orderId}`, { withCredentials: true });
+                                          const res = await axios.get(`${API_URL}/orders/${act.details.orderId}`, { withCredentials: true });
                                           setViewOrder(res.data);
                                           setIsViewingOrder(true);
                                         } catch (error: any) {
@@ -1111,7 +1111,7 @@ useEffect(() => {
                                       : orderProductsCache[act.details?.orderId || ""];
 
                                   if (!products && act.details?.orderId) {
-                                    axios.get(`http://localhost:5000/api/orders/${act.details.orderId}`, { withCredentials: true })
+                                    axios.get(`${API_URL}/orders/${act.details.orderId}`, { withCredentials: true })
 
                                       .then((res) => {
                                         setOrderProductsCache((prev) => ({
@@ -1271,7 +1271,7 @@ useEffect(() => {
                     }
                     try {
                       await axios.put(
-  `http://localhost:5000/api/orders/${viewOrder._id}/cancel`,
+  `${API_URL}/orders/${viewOrder._id}/cancel`,
   { reason: "Cancelled from dashboard" },
   { withCredentials: true }
 );

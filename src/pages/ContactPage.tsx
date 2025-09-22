@@ -14,7 +14,7 @@ const ContactPage: React.FC = () => {
     message: "",
   });
   const [submitting, setSubmitting] = useState(false);
-
+  const API_URL = import.meta.env.VITE_API_URL;
   const fetchMessages = async () => {
     if (!user) {
       setLoading(false);
@@ -24,7 +24,7 @@ const ContactPage: React.FC = () => {
 
     try {
       setLoading(true);
-      const res = await axios.get(`http://localhost:5000/api/contact/my`, { withCredentials: true });
+      const res = await axios.get(`${API_URL}/contact/my`, { withCredentials: true });
       setMessages(res.data);
     } catch (error) {
       console.error("Error fetching user messages:", error);
@@ -56,7 +56,7 @@ const ContactPage: React.FC = () => {
 
     setSubmitting(true);
     try {
-      const res = await axios.post("http://localhost:5000/api/contact", {
+      const res = await axios.post(`${API_URL}/contact`, {
         ...formData,
         userId: user?._id || null,
       });

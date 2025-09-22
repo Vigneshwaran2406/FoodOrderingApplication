@@ -15,7 +15,7 @@ const RestaurantDetailPage: React.FC = () => {
     sortBy: 'name',
     sortOrder: 'asc'
   });
-
+  const API_URL = import.meta.env.VITE_API_URL;
   const categories = [
     { value: '', label: 'All Categories' },
     { value: 'appetizer', label: 'Appetizers' },
@@ -44,7 +44,7 @@ const RestaurantDetailPage: React.FC = () => {
 
   const fetchRestaurantDetails = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/restaurants/${id}`);
+      const response = await axios.get(`${API_URL}/restaurants/${id}`);
       setRestaurant(response.data.restaurant);
     } catch (error) {
       console.error('Error fetching restaurant details:', error);
@@ -62,7 +62,7 @@ const RestaurantDetailPage: React.FC = () => {
         }
       });
 
-      const response = await axios.get(`http://localhost:5000/api/restaurants/${id}/menu?${params}`);
+      const response = await axios.get(`${API_URL}/restaurants/${id}/menu?${params}`);
       setMenu(response.data);
     } catch (error) {
       console.error('Error fetching menu:', error);

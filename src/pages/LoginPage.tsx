@@ -11,7 +11,7 @@ const LoginPage: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-
+  const API_URL = import.meta.env.VITE_API_URL;
   const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation(); // ✅ get previous route

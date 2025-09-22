@@ -27,7 +27,7 @@ const MenuPage: React.FC = () => {
     { value: 'beverage', label: 'Beverages' },
     { value: 'snacks', label: 'Snacks' }
   ];
-
+ 
   useEffect(() => {
     fetchProducts();
   }, [filters]);

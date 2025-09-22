@@ -19,7 +19,7 @@ const CartPage: React.FC = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-
+  const API_URL = import.meta.env.VITE_API_URL;
   const buyNowProduct = (location.state as any)?.buyNowProduct || null;
 
   const [loading, setLoading] = useState(false);
@@ -164,7 +164,7 @@ const CartPage: React.FC = () => {
       }));
     }
 
-    const res = await axios.post('http://localhost:5000/api/orders', {
+    const res = await axios.post(`${API_URL}/orders`, {
       items: orderItems,
       deliveryAddress: orderData.deliveryAddress,
       paymentMethod: orderData.paymentMethod,
@@ -226,7 +226,7 @@ const CartPage: React.FC = () => {
     try {
       const order = await createOrder();
       if (!order) return;
-      const res = await fetch('http://localhost:5000/api/payments/upi', {
+      const res = await fetch(`${API_URL}/payments/upi`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -263,7 +263,7 @@ const CartPage: React.FC = () => {
     try {
       const order = await createOrder();
       if (!order) return;
-      const res = await fetch('http://localhost:5000/api/payments/card', {
+      const res = await fetch(`${API_URL}/payments/card`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
