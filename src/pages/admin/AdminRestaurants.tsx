@@ -53,7 +53,7 @@ const AdminRestaurants: React.FC = () => {
 
   const fetchRestaurants = async () => {
     try {
-      const response = await axios.get('${API_URL}/restaurants');
+      const response = await axios.get(`${API_URL}/restaurants`);
       setRestaurants(response.data.restaurants);
     } catch (error) {
       console.error('Error fetching restaurants:', error);
@@ -69,7 +69,7 @@ const AdminRestaurants: React.FC = () => {
         const response = await axios.put(`${API_URL}/admin/restaurants/${editingRestaurant}`, formData);
         console.log('Restaurant updated:', response.data);
       } else {
-        const response = await axios.post('${API_URL}/admin/restaurants', formData);
+        const response = await axios.post(`${API_URL}/admin/restaurants`, formData);
         console.log('Restaurant created:', response.data);
       }
       
