@@ -37,6 +37,7 @@ router.put("/profile/upload", authMiddleware, upload.single("profileImage"), asy
 
     const updatedUser = await User.findByIdAndUpdate(
       userId,
+      
       { profileImage: imageUrl },
       { new: true }
     ).select("-password");
