@@ -162,9 +162,10 @@ const AdminUsers: React.FC = () => {
         formData
       );
       const updatedUser = response.data.user;
-      setUsers((prev) =>
-        prev.map((u) => (u._id === updatedUser._id ? updatedUser : u))
-      );
+      setUsers((prev) => {
+      const filtered = prev.filter((u) => u._id !== updatedUser._id);
+      return [updatedUser, ...filtered]; // ✅ updated user always on top
+      });
       setShowEditModal(false);
       setEditingUser(null);
       resetForm();
