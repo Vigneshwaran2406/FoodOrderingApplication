@@ -441,20 +441,19 @@ const fetchUserDetails = async (userId: string) => {
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {user.address &&
-                    (user.address.street || user.address.city) ? (
-                      <div className="flex items-center text-sm text-gray-900">
-                        <MapPin size={14} className="mr-2 text-gray-400" />
+                    {user.address && (user.address.city || user.address.state) ? (
+                    <div className="flex items-center text-sm text-gray-900">
+                      <MapPin size={12} className="mr-2 text-gray-400" />
                         <span>
-                          {user.address.street && `${user.address.street}, `}
                           {user.address.city}
                           {user.address.state && `, ${user.address.state}`}
                         </span>
-                      </div>
+                    </div>
                     ) : (
-                      <span className="text-sm text-gray-500">No address</span>
-                    )}
+                    <span className="text-sm text-gray-500">No address</span>
+                      )}
                   </td>
+
                   <td className="px-6 py-4 whitespace-nowrap">
                     <label className="inline-flex items-center cursor-pointer">
                       <input
