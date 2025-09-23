@@ -7,7 +7,6 @@ import Feedback from '../models/Feedback.js';
 import nodemailer from "nodemailer";
 import { authMiddleware, adminMiddleware } from '../middleware/auth.js';
 import Activity from '../models/Activity.js';
-import { updateSourceFile } from 'typescript';
 
 const router = express.Router();
 
@@ -115,8 +114,6 @@ router.get("/users", async (req, res) => {
   }
 });
 
-
-// GET /api/admin/users/:id/details
 router.get("/users/:id/details", async (req, res) => {
   try {
     const user = await User.findById(req.params.id).select("-password");
