@@ -7,6 +7,7 @@ import Feedback from '../models/Feedback.js';
 import nodemailer from "nodemailer";
 import { authMiddleware, adminMiddleware } from '../middleware/auth.js';
 import Activity from '../models/Activity.js';
+import { updateSourceFile } from 'typescript';
 
 const router = express.Router();
 
@@ -98,13 +99,22 @@ router.get('/users', async (req, res) => {
     const users = await User.find(query)
       .select("-password")
       .sort({ createdAt: 'descending' });
-
     res.json(users);
   } catch (error) {
     console.error("Get users error:", error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 });
+
+router.get("/users", async (req, res) => {
+  try {
+    const users = await User.find().sort({ updatedAt: -1 }); 
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
 
 // GET /api/admin/users/:id/details
 router.get("/users/:id/details", async (req, res) => {
