@@ -95,9 +95,7 @@ router.get('/users', async (req, res) => {
     if (role === "user") query.role = "user";
     else if (role === "admin") query.role = "admin";
 
-    const users = await User.find(query)
-      .select("-password")
-      .sort({ createdAt: 'descending' });
+    const users = await User.find().sort({ updatedAt: -1 }); 
     res.json(users);
   } catch (error) {
     console.error("Get users error:", error);
@@ -105,14 +103,7 @@ router.get('/users', async (req, res) => {
   }
 });
 
-router.get("/users", async (req, res) => {
-  try {
-    const users = await User.find().sort({ updatedAt: -1 }); 
-    res.json(users);
-  } catch (error) {
-    res.status(500).json({ error: "Server error" });
-  }
-});
+
 
 router.get("/users/:id/details", async (req, res) => {
   try {
