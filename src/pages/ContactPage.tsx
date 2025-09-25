@@ -69,11 +69,7 @@ const ContactPage: React.FC = () => {
     createdAt: new Date().toISOString(),
     response: null,
   };
- setMessages((prev) =>
-  prev.map((msg) =>
-    msg._id === res.data.message._id ? res.data.message : msg
-  )
-);
+  setMessages((prev) => [newMsg, ...prev]); // ✅ immediate update
 }
  else {
         toast.error(res.data.msg || "Failed to send message.");
