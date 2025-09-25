@@ -5,18 +5,24 @@ import { sendEmail } from "../utils/sendEmail.js";
 
 const router = express.Router();
 
-// Get logged-in user's own messages
+// ✅ Get logged-in user's own messages
 router.get("/my", authMiddleware, async (req, res) => {
   try {
-    const messages = await ContactMessage.find({ user: req.user.userId }).sort({ createdAt: -1 });
+    // Fix: use req.user._id instead of req.user.userId
+    const messages = await ContactMessage.find({ user: req.user._id })
+      .sort({ createdAt: -1 });
+
     res.json(messages);
   } catch (err) {
     console.error("Error fetching user messages:", err);
-    res.status(500).json({ success: false, message: "Failed to fetch your messages" });
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch your messages",
+    });
   }
 });
 
-// POST contact (guest or user)
+// ✅ POST contact (guest or user)
 router.post("/", async (req, res) => {
   try {
     const { name, email, subject, message, userId } = req.body;
@@ -37,10 +43,13 @@ router.post("/", async (req, res) => {
   }
 });
 
-// GET all messages (admin only)
+// ✅ GET all messages (admin only)
 router.get("/admin", authMiddleware, verifyAdmin, async (req, res) => {
   try {
-    const messages = await ContactMessage.find().populate("user", "name email");
+    const messages = await ContactMessage.find()
+      .populate("user", "name email")
+      .sort({ createdAt: -1 });
+
     res.json(messages);
   } catch (err) {
     console.error("Error fetching all messages:", err);
@@ -48,33 +57,40 @@ router.get("/admin", authMiddleware, verifyAdmin, async (req, res) => {
   }
 });
 
-// Admin reply to a contact message
+// ✅ Admin reply to a contact message
 router.put("/admin/respond/:id", authMiddleware, verifyAdmin, async (req, res) => {
   try {
     const { response } = req.body;
-    const message = await ContactMessage.findById(req.params.id).populate("user", "email name");
+    const message = await ContactMessage.findById(req.params.id)
+      .populate("user", "email name");
 
     if (!message) {
-      return res.status(404).json({ success: false, msg: "Message not found" });
-    }
-    
-    // ⭐ Check the correct response field from the model
-    if (message.response?.text) {
-      return res.status(400).json({ success: false, msg: "This message has already been responded to." });
+      return res.status(404).json({
+        success: false,
+        msg: "Message not found",
+      });
     }
 
-    // ⭐ Save the response and timestamp to the `response` object
+    // Prevent double response
+    if (message.response?.text) {
+      return res.status(400).json({
+        success: false,
+        msg: "This message has already been responded to.",
+      });
+    }
+
+    // Save admin response
     message.response = {
-        text: response,
-        respondedAt: new Date(),
+      text: response,
+      respondedAt: new Date(),
     };
-    
-    // ⭐ Update the status to 'responded'
+
+    // Update status
     message.status = "responded";
-    
+
     await message.save();
 
-    // Send email to guest or user without an active status
+    // Optionally send email if guest or inactive user
     if (!message.user || message.user?.status === "inactive") {
       await sendEmail({
         to: message.email,
@@ -84,7 +100,11 @@ router.put("/admin/respond/:id", authMiddleware, verifyAdmin, async (req, res) =
       });
     }
 
-    res.json({ success: true, msg: "Reply sent successfully", message });
+    res.json({
+      success: true,
+      msg: "Reply sent successfully",
+      message,
+    });
   } catch (err) {
     console.error("Error replying to contact message:", err);
     res.status(500).json({ success: false, msg: "Failed to send reply" });

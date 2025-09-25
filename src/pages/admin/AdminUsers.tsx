@@ -164,7 +164,7 @@ const AdminUsers: React.FC = () => {
       const updatedUser = response.data.user;
       setUsers((prev) => {
       const filtered = prev.filter((u) => u._id !== updatedUser._id);
-      return [updatedUser, ...filtered]; // ✅ updated user always on top
+      return [updatedUser, ...filtered];
       });
       setShowEditModal(false);
       setEditingUser(null);

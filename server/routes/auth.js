@@ -87,7 +87,6 @@ router.post("/login", async (req, res) => {
             "Your account has been deactivated. Please contact support.",
         });
     }
-
     user.lastLogin = new Date();
     await user.save();
 

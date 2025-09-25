@@ -143,14 +143,14 @@ router.get('/admin/refunds', authMiddleware, async (req, res) => {
       .populate("user", "fullName email")
       .populate("order", "orderNumber totalAmount createdAt");
     const order = await Order.findById(payment.order);
-if (order) {
-  order.refundDetails = {
-    status: "pending",
-    reason: req.body.reason || "User requested refund",
-    requestedAt: new Date()
-  };
-  await order.save();
-}
+    if (order) {
+      order.refundDetails = {
+      status: "pending",
+      reason: req.body.reason || "User requested refund",
+      requestedAt: new Date()
+      };
+      await order.save();
+    }
 
     res.json(refunds);
   } catch (err) {
@@ -174,17 +174,17 @@ router.put('/:transactionId/refund/approve', authMiddleware, async (req, res) =>
     payment.refundStatus = "approved";
     await payment.save();
     const order = await Order.findById(payment.order);
-if (order) {
-  order.refundDetails.status = refundStatus === "approved" ? "approved" : "denied";
-  order.refundDetails.respondedAt = new Date();
-  await order.save();
-}
+    if (order) {
+      order.refundDetails.status = refundStatus === "approved" ? "approved" : "denied";
+      order.refundDetails.respondedAt = new Date();
+      await order.save();
+    }
 
     return res.json({ success: true, message: "Refund approved and processed", payment });
   } catch (error) {
     console.error("Admin refund approval error:", error);
     res.status(500).json({ success: false, message: "Refund approval failed" });
-  }
+    }
 });
 
 // Admin rejects refund
