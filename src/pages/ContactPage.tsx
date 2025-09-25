@@ -62,10 +62,16 @@ const ContactPage: React.FC = () => {
       });
 
       if (res.data.success) {
-        toast.success("Message sent successfully!");
-        setFormData({ ...formData, subject: "", message: "" });
-        fetchMessages(); // Refresh messages after submitting
-      } else {
+  const newMsg = {
+    _id: res.data.message._id,   // make sure backend returns saved message
+    subject: formData.subject,
+    message: formData.message,
+    createdAt: new Date().toISOString(),
+    response: null,
+  };
+  setMessages((prev) => [newMsg, ...prev]); // ✅ immediate update
+}
+ else {
         toast.error(res.data.msg || "Failed to send message.");
       }
     } catch (err) {

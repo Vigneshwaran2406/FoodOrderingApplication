@@ -36,10 +36,19 @@ const AdminContact: React.FC = () => {
       );
 
       if (res.data.success) {
-        toast.success("Response sent!");
-        setReplyText({ ...replyText, [id]: "" });
-        fetchMessages();
-      } else {
+  toast.success("Response sent!");
+  setReplyText({ ...replyText, [id]: "" });
+
+  // ✅ Optimistically update local state
+  setMessages((prev) =>
+    prev.map((msg) =>
+      msg._id === id
+        ? { ...msg, response: { text: replyText[id], respondedAt: new Date() } }
+        : msg
+    )
+  );
+}
+ else {
         toast.error(res.data.message || "Failed to respond");
       }
     } catch (err) {
